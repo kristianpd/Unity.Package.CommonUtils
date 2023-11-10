@@ -11,12 +11,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [
-        {
-            "name": "org.nuget.jaeger",
-            "expression": "0.0.0",
-            "define": "PACKAGE_JAEGER"
-        }
-    ],
+    "versionDefines": [],
     "noEngineReferences": false
 }

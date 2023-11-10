@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +24,6 @@ namespace Trackman
 
         #region Properties
         public static List<UnityWebRequest> WebRequests => webRequests;
-        static readonly Lazy<ITracing> tracing = new(() => UnityEngine.Object.FindObjectsOfType<MonoBehaviour>().OfType<ITracing>().FirstOrDefault());
         #endregion
 
         #region Methods
@@ -70,7 +68,7 @@ namespace Trackman
                 string PrettyPrintBytes(byte[] bytes, IDictionary<string, string> headers)
                 {
                     if (bytes is null) return "null";
-                    bool textContent = (headers is not null && headers.TryGetValue("Content-Type", out string value) && value.Contains("Application/json")) || (contentType.NotNullOrEmpty() && contentType.Contains("Application/json"));
+                    bool textContent = (headers is not null && headers.TryGetValue("Content-Type", out string value) && value.Contains("Application/json")) || (contentType.NotNullOrEmpty() && contentType!.Contains("Application/json"));
                     return textContent && bytes.Length < saneDumpLength ? Encoding.UTF8.GetString(bytes) : $"<binary {bytes.Length} bytes>";
                 }
 
@@ -99,9 +97,6 @@ namespace Trackman
                 if (value.uploadedBytes == 0) return $"{value.downloadHandler.nativeData.Length.ToByteSize()}";
                 return $"{value.downloadHandler.nativeData.Length.ToByteSize()} {value.uploadedBytes.ToByteSize()}";
             }
-
-            using IDisposable scope = tracing.Value?.Scope($"{nameof(HttpExtensions)}.{nameof(HttpMethodAsync)}");
-            headers = tracing.Value?.Inject(tracing.Value?.Active, headers ?? new Dictionary<string, string>()) ?? headers;
 
             UnityWebRequest request = new(url, method, new DownloadHandlerBuffer(), default) { timeout = timeout };
 
