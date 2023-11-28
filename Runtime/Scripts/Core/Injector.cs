@@ -57,7 +57,16 @@ namespace Trackman
                 }
 
                 if (singletonInjectable.TryGetValue(property.PropertyType, out MonoBehaviour singletonMono))
+                {
                     property.SetValue(value, singletonMono);
+                }
+#if UNITY_EDITOR
+                else if (!Application.isPlaying)
+                {
+                    singletonMono = MonoBehaviour.FindObjectsOfType<MonoBehaviour>().FirstOrDefault(x => x.GetType() == property.PropertyType);
+                    if (singletonMono) property.SetValue(value, singletonMono);
+                }
+#endif
             }
         }
         public static void Eject<T>(this T mono) where T : MonoBehaviour, IMonoBehaviourInjectable
