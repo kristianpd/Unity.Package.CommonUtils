@@ -9,5 +9,5 @@
   "dependencies": {
     "org.nuget.newtonsoft.json": "13.0.3"
   },
-  "hideInEditor": "false"
+  "hideInEditor": false
 }
