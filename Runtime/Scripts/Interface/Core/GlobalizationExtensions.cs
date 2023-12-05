@@ -27,6 +27,7 @@ namespace Trackman.Globalization
         public static string ToText(this int value, string format = default) => value.ToString(format, current);
         public static string ToText(this float value, string format = default) => value.ToString(format, current);
         public static string ToText(this TimeSpan value, string format = default) => value.ToString(format);
+        public static string ToTitleCase(this string text) => current.TextInfo.ToTitleCase(text.ToLower());
         #endregion
     }
 }
